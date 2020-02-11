@@ -1,0 +1,16 @@
+#include <iostream>
+#include <iomanip>
+using namespace std;
+
+
+int main() {
+	for (int i = 0; i < 17; i++) {
+		if (i==5 || i==11) {
+			for (int j = 0; j <	16; j++)
+				cout << "= "; 
+			cout << "\n";
+		}	
+		else
+			cout << setfill(' ') << setw(10) << "=" << setfill(' ') << setw(10) << "=" <<  endl;
+	}	
+}
