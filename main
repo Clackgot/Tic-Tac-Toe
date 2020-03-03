@@ -3,76 +3,123 @@ using namespace std;
 
 
 class TicTacToe {
-	public:
-		TicTacToe() {
-			for (int i = 0; i < 3; i++)
-				for (int j = 0; j < 3; j++)
-					Field[i][j] += 6; 
-		}
-		
-		void Player1() {
-			int Ox, Oy;
-			Checking();
-			CheckingOftheResult();
-				if (CheckingOftheResult() == true)
-				return;
-			do {
-				cout << "Player 1: Enter coordinates: Ox from 0 to 2. Oy from 0 to 2" << endl;
-				cin >> Ox >> Oy;
-				Field[Ox][Oy] = 1;
-				Checking();
-				Player2();
+public:
+	TicTacToe()
+	{
+		for (int i = 0; i < 3; i++)
+		{
+			for (int j = 0; j < 3; j++)
+			{
+				Field[i][j] = '*';
 			}
-			while (Checking()!=true);
-			return;
 		}
-		
-		void Player2() {
-			int Ox, Oy;
-			Checking();
-			CheckingOftheResult();
-			if (CheckingOftheResult() == true)
-				return;
-			do {
-				cout << "Player 2: Enter coordinates: Ox from 0 to 2. Oy from 0 to 2" << endl;
-				cin >> Ox >> Oy;
-				Field[Ox][Oy] = 2;
-				Checking();
-				Player1();
-			}
-			while (Checking()!=true);
-			return;
-		}		
-	private:
-		int Field[3][3];
-		
-		bool Checking() {
-			for (int i = 0; i < 3; i++)
-				for (int j = 0; j < 3; j++)
-					if (Field[i][j] != 0) {
-						int just_variable = 1;
-						just_variable++;
-						if (just_variable == 9) {
-							cout << "IT IS DRAW !!!" << endl;
-							return true;
-						}
-						else
-							return false;	
-					}
-		}
-		
-		bool CheckingOftheResult() {
-			for (int i = 0; i < 3; i++)
-				for (int j = 0; j < 3; j++) {
-					if (( Field[i][1] == Field[i][2] == Field[i][3] == 1 ) || ( Field[1][j] == Field[2][j] == Field[3][j] == 1 ) || ( Field[i][j] && i == j == 1 ) || ( Field[2][0] == Field[1][1] == Field[0][2] == 1 )) {
-						cout << "PLAYER 1 WON !!!" << endl;
-						return true;
-					}
-					if (( Field[i][1] == Field[i][2] == Field[i][3] == 2 ) || ( Field[1][j] == Field[2][j] == Field[3][j] == 2 ) || ( Field[i][j] && i == j == 2 ) || ( Field[2][0] == Field[1][1] == Field[0][2] == 2 )) {
-						cout << "PLAYER 2 WON !!!" << endl;
-						return true;
-					}
+	}
+
+	void Endless_Cycle()
+	{
+		do
+		{
+			draw();
+			Player1();
+			draw();
+			Player2();
+		} while (CheckingOfResult() != true || CheckingOfDraw() != true );
+		return;
+	}
+
+	void Player1()
+	{
+		int x, y;
+		do
+		{
+			cout << "Player 1: Enter coordinates: Ox from 0 to 2. Oy from 0 to 2" << endl;
+			cin >> x >> y;
+			Field[x][y] = 'X';
+		} while ((0 > x || x > 2) && (0 > x || x > 2));
+	}
+
+	void Player2()
+	{
+		int x, y;
+		do
+		{
+			cout << "Player 2: Enter coordinates: Ox from 0 to 2. Oy from 0 to 2" << endl;
+			cin >> x >> y;
+			Field[x][y] = '0';
+		} while ((0 > x || x > 2) && (0 > x || x > 2));
+		return;
+	}
+
+	bool CheckingOfResult()
+	{
+		for (int i = 0; i < 3; i++)
+		{
+			for (int j = 0; j < 3; j++)
+			{
+				if ((Field[i][1] == Field[i][2] == Field[i][3] == 'X') || (Field[1][j] == Field[2][j] == Field[3][j] == 'X') || (Field[i][j] && i == j == 'X') || (Field[2][0] == Field[1][1] == Field[0][2] == 'X'))
+				{
+					result = "PLAYER 1 WON !!!";
+					return true;
 				}
+				if ((Field[i][1] == Field[i][2] == Field[i][3] == '0') || (Field[1][j] == Field[2][j] == Field[3][j] == '0') || (Field[i][j] && i == j == '0') || (Field[2][0] == Field[1][1] == Field[0][2] == '0'))
+				{
+					result = "PLAYER 2 WON !!!";
+					return true;
+				}
+			}
 		}
+		return false;
+	}
+
+	bool CheckingOfDraw()
+	{
+		for (int i = 0; i < 3; i++)
+		{
+			for (int j = 0; j < 3; j++)
+			{
+				if ((Field[i][j] == 'X' || Field[i][j] == '0') && CheckingOfResult() == false)
+				{
+					result = "IT'S DRAW !!!";
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	string GetResult()
+	{
+		return result;
+	}
+
+	void draw()
+	{
+		system("cls");
+		for (int i = 0; i < 3; i++)
+		{
+			for (int j = 0; j < 3; j++)
+			{
+				cout << Field[i][j] << " ";
+			}
+			cout << endl;
+		}
+	}
+
+private:
+	char Field[3][3];
+
+	string result;
+
 };
 
+
+int main()
+{
+	int x, y;
+
+	TicTacToe game;
+	game.Endless_Cycle();
+	game.GetResult();
+
+	return 0;
+}
